@@ -8,4 +8,4 @@ edition = "2021"
 [dependencies]
 regex = "1.7.1"
 serialport = "4.2.0"
-binaryfile = { path = "../binaryfile" }
+binaryfile = { git = "https://github.com/sugarflowers/binaryfile.git" }
