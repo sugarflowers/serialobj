@@ -98,14 +98,15 @@ impl SerialComm {
                     return caps[0].to_string();
                 }
 
-                buffer = normalize_newlines(buffer);
+                truncate_before_last_ab(&mut buffer);
                 
                 // 改行があったらラインバッファをクリアする。
-                
+
+                /*
                 if let Some(index) = buffer.iter().position(|&x| x == b'\r' || x == b'\n' ) {
                     let linebuffer:Vec<u8> = linebuffer[index+1..].to_vec();
                 }
-                
+                */
                 //if let Some(index) = buffer.windows(2).position(|w| w == "\r" || w == "\n" ) {
                 //    let linebuffer: Vec<u8> = buffer[index + 2..].to_vec();
                 //}
