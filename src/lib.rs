@@ -29,7 +29,7 @@ pub struct SerialComm {
 
 
 fn truncate_before_last_ab(buffer: &mut Vec<u8>) {
-    if let Some(pos) = buffer.windows(2).rposition(|window| window == b"\\n" || window == b"\\r" ) {
+    if let Some(pos) = buffer.windows(2).rposition(|window| window == b"\n" || window == b"\r" ) {
         buffer.drain(..=pos + 1); // "AB"の直後の位置から残す
     }
 }
