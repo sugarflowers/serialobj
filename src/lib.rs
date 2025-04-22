@@ -27,6 +27,14 @@ pub struct SerialComm {
     pub monitor: bool,
 }
 
+fn truncate_before_newline(buf: &mut Vec<u8>) {
+    if let Some(index) = buf.windows(2).position(|w| w == b"\r\n") {
+        *buf = buf[index + 2..].to_vec(); // "\r\n" の後の部分を保持
+    } else if let Some(index) = buf.iter().position(|&x| x == b'\r' || x == b'\n') {
+        *buf = buf[index + 1..].to_vec(); // 改行より後の部分を保持
+    }
+}
+
 impl SerialComm {
     pub fn new(port_name: &str, speed: u32) -> Result<Self, io::Error> {
         let port = Box::new(serialport::new(port_name, speed).open_native()?);
@@ -96,9 +104,12 @@ impl SerialComm {
                     let linebuffer:Vec<u8> = linebuffer[index+1..].to_vec();
                 }
                 */
-                if let Some(index) = buffer.windows(2).position(|w| w == "\r" || w == "\n" ) {
-                    let linebuffer: Vec<u8> = buffer[index + 2..].to_vec();
-                }
+                //if let Some(index) = buffer.windows(2).position(|w| w == "\r" || w == "\n" ) {
+                //    let linebuffer: Vec<u8> = buffer[index + 2..].to_vec();
+                //}
+                //let mut buf = b"hello\r\nworld".to_vec();
+                truncate_before_newline(&mut Buffer);
+  
             }
         }
     }
