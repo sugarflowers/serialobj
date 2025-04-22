@@ -59,14 +59,14 @@ fn normalize_newlines(buffer: Vec<u8>) -> Vec<u8> {
         if b == b'\\' {
             match iter.peek() {
                 Some(&b'r') => {
-                    result.push(0x0D);
+                    //result.push(0x0D);
                     iter.next();
                 }
                 Some(&b'n') => {
-                    result.push(0x0A);
+                    //result.push(0x0A);
                     iter.next();
                 }
-                _ => result.push(b),
+                _ => {}, //result.push(b),
             }
         } else {
             result.push(b);
