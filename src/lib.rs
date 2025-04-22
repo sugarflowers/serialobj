@@ -108,13 +108,17 @@ impl SerialComm {
   
             }
             // 改行があったらラインバッファをクリアする。
+            /*
             if let Some(index) = linebuffer.iter().position(|&x| x == 0x0a || x == 0x0d ) {
                 let linebuffer:Vec<u8> = linebuffer[index+1..].to_vec();
                 if index > 0 {
                     print!("{:02x}", linebuffer[index]);
                 }
             }
+            */
             
+                &linebuffer.iter().map(|byte| format!("{:02X}", byte)).collect::<Vec<_>>().join(" ")
+
             
         }
     }
