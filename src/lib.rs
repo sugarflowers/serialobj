@@ -28,7 +28,7 @@ pub struct SerialComm {
 }
 
 fn truncate_before_newline(buf: &mut Vec<u8>) {
-    buf = normalize_newlines(buf);
+    
     if let Some(index) = buf.windows(2).position(|w| w == b"\r\n") {
         *buf = buf[index + 2..].to_vec(); // "\r\n" の後の部分を保持
     } else if let Some(index) = buf.iter().position(|&x| x == b'\r' || x == b'\n') {
@@ -115,18 +115,20 @@ impl SerialComm {
                     return caps[0].to_string();
                 }
 
+                buffer = normalize_newlines(buffer);
+                
                 // 改行があったらラインバッファをクリアする。
-                /*
+                
                 if let Some(index) = buffer.iter().position(|&x| x == b'\r' || x == b'\n' ) {
                     let linebuffer:Vec<u8> = linebuffer[index+1..].to_vec();
                 }
-                */
+                
                 //if let Some(index) = buffer.windows(2).position(|w| w == "\r" || w == "\n" ) {
                 //    let linebuffer: Vec<u8> = buffer[index + 2..].to_vec();
                 //}
                 //let mut buf = b"hello\r\nworld".to_vec();
                 //replace_newline(&mut buffer);
-                truncate_before_newline(&mut buffer);
+                
   
             }
         }
