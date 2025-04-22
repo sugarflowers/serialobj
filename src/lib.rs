@@ -46,10 +46,43 @@ fn replace_newline(buf: &mut Vec<u8>) {
 }
 */
 
+/*
 fn normalize_newlines(buffer: Vec<u8>) -> Vec<u8> {
     buffer.into_iter().filter(|&b| b != 0x00).collect()
 }
+*/
+fn normalize_newlines(buffer: Vec<u8>) -> Vec<u8> {
+    let mut result = Vec::new();
+    let mut iter = buffer.iter().peekable();
 
+    while let Some(&b) = iter.next() {
+        if b == b'\\' {
+            match iter.peek() {
+                Some(&b'r') => {
+                    result.push(0x0D);
+                    iter.next();
+                }
+                Some(&b'n') => {
+                    result.push(0x0A);
+                    iter.next();
+                }
+                _ => result.push(b),
+            }
+        } else {
+            result.push(b);
+        }
+    }
+
+    result
+}
+
+fn main() {
+    let buffer = vec![72, 101, 108, 108, 111, 0x5C, 0x72, 0x5C, 0x6E]; // "Hello\r\n"
+
+    let normalized = normalize_newlines(buffer);
+
+    println!("{:?}", normalized); // 出力: [72, 101, 108, 108, 111, 13, 10]
+}
 
 
 impl SerialComm {
