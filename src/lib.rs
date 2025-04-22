@@ -28,10 +28,8 @@ pub struct SerialComm {
 }
 
 
-fn truncate_before_last_ab(buffer: &mut Vec<u8>) {
-    if let Some(pos) = buffer.windows(2).rposition(|window| window == b"\n" || window == b"\r" ) {
-        buffer.drain(..=pos + 1); // "AB"の直後の位置から残す
-    }
+fn remove_control_chars(s: &str) -> String {
+    s.chars().filter(|c| !c.is_control()).collect()
 }
 
 
@@ -99,9 +97,10 @@ impl SerialComm {
                 }
 
                 let mut str_buf = String::from_utf8(buffer).unwrap();
+                
+                str_buf = remove_control_chars(&str_buf);
                 println!("{}", str_buf);
-                str_buf = str_buf.replace("\\r", "");
-                str_buf = str_buf.replace("\\n", "");
+
                 buffer = str_buf.into_bytes();
 
                 
