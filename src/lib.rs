@@ -123,7 +123,7 @@ impl SerialComm {
 
             let ab = self.port.bytes_to_read().unwrap();
             if ab > 0 { // データが有るので読み込んで処理
-
+                print!(">>>{:?}<<<", ab);
                 let mut buffer:Vec<u8> = vec![0; ab.try_into().unwrap()];
                 self.port.read_exact(&mut buffer).unwrap();
 
