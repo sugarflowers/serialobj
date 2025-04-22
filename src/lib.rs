@@ -98,9 +98,17 @@ impl SerialComm {
                     return caps[0].to_string();
                 }
 
+                let mut str_buf = String::from_utf8(buffer).unwrap();
+                str_buf = str_buf.replace("\r", "")
+                str_buf = str_buf.replace("\n", "")
+                buffer = str_buf.into_bytes();
+
+                
+                /*
                 if let Some(pos) = buffer.windows(2).rposition(|window| window == [0x5c,0x72] || window == [0x5c,0x6e] ) {
                     buffer.drain(..=pos + 1); // "AB"の直後の位置から残す
                 }
+                */
                 
                 // 改行があったらラインバッファをクリアする。
 
