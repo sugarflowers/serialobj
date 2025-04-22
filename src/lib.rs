@@ -108,7 +108,7 @@ impl SerialComm {
                 //    let linebuffer: Vec<u8> = buffer[index + 2..].to_vec();
                 //}
                 //let mut buf = b"hello\r\nworld".to_vec();
-                truncate_before_newline(&mut Buffer);
+                truncate_before_newline(&mut buffer);
   
             }
         }
