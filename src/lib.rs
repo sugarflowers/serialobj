@@ -27,61 +27,11 @@ pub struct SerialComm {
     pub monitor: bool,
 }
 
-fn truncate_before_newline(buf: &mut Vec<u8>) {
-    
-    if let Some(index) = buf.windows(2).position(|w| w == b"\r\n") {
-        *buf = buf[index + 2..].to_vec(); // "\r\n" の後の部分を保持
-    } else if let Some(index) = buf.iter().position(|&x| x == b'\r' || x == b'\n') {
-        *buf = buf[index + 1..].to_vec(); // 改行より後の部分を保持
+
+fn truncate_before_last_ab(buffer: &mut Vec<u8>) {
+    if let Some(pos) = buffer.windows(2).rposition(|window| window == b"\\n" || window == b"\\r" ) {
+        buffer.drain(..=pos + 1); // "AB"の直後の位置から残す
     }
-}
-
-/*
-fn replace_newline(buf: &mut Vec<u8>) {
-    buf.iter_mut().for_each(|byte| {
-        if *byte == b'\r' || *byte == b'\n' {
-            *byte = b' '; // 例: 改行をスペースに変換
-        }
-    });
-}
-*/
-
-/*
-fn normalize_newlines(buffer: Vec<u8>) -> Vec<u8> {
-    buffer.into_iter().filter(|&b| b != 0x00).collect()
-}
-*/
-fn normalize_newlines(buffer: Vec<u8>) -> Vec<u8> {
-    let mut result = Vec::new();
-    let mut iter = buffer.iter().peekable();
-
-    while let Some(&b) = iter.next() {
-        if b == b'\\' {
-            match iter.peek() {
-                Some(&b'r') => {
-                    //result.push(0x0D);
-                    iter.next();
-                }
-                Some(&b'n') => {
-                    //result.push(0x0A);
-                    iter.next();
-                }
-                _ => {}, //result.push(b),
-            }
-        } else {
-            result.push(b);
-        }
-    }
-
-    result
-}
-
-fn main() {
-    let buffer = vec![72, 101, 108, 108, 111, 0x5C, 0x72, 0x5C, 0x6E]; // "Hello\r\n"
-
-    let normalized = normalize_newlines(buffer);
-
-    println!("{:?}", normalized); // 出力: [72, 101, 108, 108, 111, 13, 10]
 }
 
 
@@ -122,7 +72,6 @@ impl SerialComm {
         loop {
 
             let ab = self.port.bytes_to_read().unwrap();
-            print!(">>{:?}<<", ab);
             
             if ab > 0 { // データが有るので読み込んで処理
                 let mut buffer:Vec<u8> = vec![0; ab.try_into().unwrap()];
