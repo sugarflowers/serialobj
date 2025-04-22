@@ -96,7 +96,7 @@ impl SerialComm {
                     let linebuffer:Vec<u8> = linebuffer[index+1..].to_vec();
                 }
                 */
-                if let Some(index) = buffer.windows(2).position(|w| w == b"\r" || w == b"\n" ) {
+                if let Some(index) = buffer.windows(2).position(|w| w == "\r" || w == "\n" ) {
                     let linebuffer: Vec<u8> = buffer[index + 2..].to_vec();
                 }
             }
