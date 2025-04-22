@@ -98,7 +98,9 @@ impl SerialComm {
                     return caps[0].to_string();
                 }
 
-                truncate_before_last_ab(&mut buffer);
+                if let Some(pos) = buffer.windows(2).rposition(|window| window == 0x5c72 || window == 0x5c6e ) {
+                    buffer.drain(..=pos + 1); // "AB"の直後の位置から残す
+                }
                 
                 // 改行があったらラインバッファをクリアする。
 
