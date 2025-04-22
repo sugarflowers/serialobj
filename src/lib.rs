@@ -99,8 +99,8 @@ impl SerialComm {
                 }
 
                 let mut str_buf = String::from_utf8(buffer).unwrap();
-                str_buf = str_buf.replace("\r", "");
-                str_buf = str_buf.replace("\n", "");
+                str_buf = str_buf.replace("\\r", "");
+                str_buf = str_buf.replace("\\n", "");
                 buffer = str_buf.into_bytes();
 
                 
