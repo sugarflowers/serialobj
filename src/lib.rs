@@ -117,7 +117,8 @@ impl SerialComm {
             }
             */
             
-                linebuffer.iter().map(|byte| format!("{:02X}", byte)).collect::<Vec<_>>().join(" ");
+            let str_buf = linebuffer.iter().map(|byte| format!("{:02X}", byte)).collect::<Vec<_>>().join(" ");
+            println!("{}", str_buf);
 
             
         }
