@@ -96,35 +96,22 @@ impl SerialComm {
                     return caps[0].to_string();
                 }
 
+                /*
                 let mut str_buf = String::from_utf8(buffer).unwrap();
                 
                 str_buf = remove_control_chars(&str_buf);
-                println!("{}", str_buf);
+                print!("{}", str_buf);
 
                 buffer = str_buf.into_bytes();
-
-                
-                /*
-                if let Some(pos) = buffer.windows(2).rposition(|window| window == [0x5c,0x72] || window == [0x5c,0x6e] ) {
-                    buffer.drain(..=pos + 1); // "AB"の直後の位置から残す
-                }
                 */
-                
-                // 改行があったらラインバッファをクリアする。
-
-                /*
-                if let Some(index) = buffer.iter().position(|&x| x == b'\r' || x == b'\n' ) {
-                    let linebuffer:Vec<u8> = linebuffer[index+1..].to_vec();
-                }
-                */
-                //if let Some(index) = buffer.windows(2).position(|w| w == "\r" || w == "\n" ) {
-                //    let linebuffer: Vec<u8> = buffer[index + 2..].to_vec();
-                //}
-                //let mut buf = b"hello\r\nworld".to_vec();
-                //replace_newline(&mut buffer);
-                
+               
   
             }
+            // 改行があったらラインバッファをクリアする。
+            if let Some(index) = buffer.iter().position(|&x| x == b'\r' || x == b'\n' ) {
+                let linebuffer:Vec<u8> = linebuffer[index+1..].to_vec();
+            }
+            
         }
     }
 }
