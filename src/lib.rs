@@ -34,8 +34,6 @@ fn truncate_before_newline(buffer: &mut Vec<u8>) {
     }
 }
 
-
-
 impl SerialComm {
     pub fn new(port_name: &str, speed: u32) -> Result<Self, io::Error> {
         let port = Box::new(serialport::new(port_name, speed).open_native()?);
@@ -94,36 +92,12 @@ impl SerialComm {
                 // ヒットした場合ヒットした文字列を返す。
                 linebuffer.extend(&buffer);
                 let data = String::from_utf8_lossy(&linebuffer);
-                //println!("{:?}\n{:?}\n", &data, &target);
                 if let Some(caps) = re.captures(&data) {
                     return caps[0].to_string();
                 }
-
-                /*
-                let mut str_buf = String::from_utf8(buffer).unwrap();
-                
-                str_buf = remove_control_chars(&str_buf);
-                print!("{}", str_buf);
-
-                buffer = str_buf.into_bytes();
-                */
-               
-  
             }
             // 改行があったらラインバッファをクリアする。
-            /*
-            if let Some(index) = linebuffer.iter().position(|&x| x == 0x0a || x == 0x0d ) {
-                let linebuffer:Vec<u8> = linebuffer[index+1..].to_vec();
-                if index > 0 {
-                    print!("{:02x}", linebuffer[index]);
-                }
-            }
-            */
             truncate_before_newline(&mut linebuffer);
-            //let str_buf = linebuffer.iter().map(|byte| format!("{:02X}", byte)).collect::<Vec<_>>().join(" ");
-            //println!("{}", str_buf);
-
-            
         }
     }
 }
