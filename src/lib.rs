@@ -92,7 +92,7 @@ impl SerialComm {
                 // 改行があったらラインバッファをクリアする。
                 if let Some(index) = buffer.iter().position(|&x| x == 0x0A || x == 0x0D ) {
                     //let linebuffer:Vec<u8> = linebuffer[index+1..].to_vec();
-                    let mut linebuffer:Vec<u8> = Vec::new();
+                    linebuffer = Vec::new();
                 }
             }
         }
