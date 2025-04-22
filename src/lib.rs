@@ -35,6 +35,15 @@ fn truncate_before_newline(buf: &mut Vec<u8>) {
     }
 }
 
+fn replace_newline(buf: &mut Vec<u8>) {
+    buf.iter_mut().for_each(|byte| {
+        if *byte == b'\r' || *byte == b'\n' {
+            *byte = b' '; // 例: 改行をスペースに変換
+        }
+    });
+}
+
+
 impl SerialComm {
     pub fn new(port_name: &str, speed: u32) -> Result<Self, io::Error> {
         let port = Box::new(serialport::new(port_name, speed).open_native()?);
@@ -108,6 +117,7 @@ impl SerialComm {
                 //    let linebuffer: Vec<u8> = buffer[index + 2..].to_vec();
                 //}
                 //let mut buf = b"hello\r\nworld".to_vec();
+                replace_newline(&mut buffer)
                 truncate_before_newline(&mut buffer);
   
             }
