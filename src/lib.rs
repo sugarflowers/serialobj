@@ -28,9 +28,12 @@ pub struct SerialComm {
 }
 
 
-fn remove_control_chars(s: &str) -> String {
-    s.chars().filter(|c| !c.is_control()).collect()
+fn truncate_before_newline(buffer: &mut Vec<u8>) {
+    if let Some(pos) = buffer.iter().position(|&byte| byte == 0x0D || byte == 0x0A) {
+        buffer.drain(..=pos);
+    }
 }
+
 
 
 impl SerialComm {
@@ -116,9 +119,9 @@ impl SerialComm {
                 }
             }
             */
-            
-            let str_buf = linebuffer.iter().map(|byte| format!("{:02X}", byte)).collect::<Vec<_>>().join(" ");
-            println!("{}", str_buf);
+            truncate_before_newline(&mut linebuffer);
+            //let str_buf = linebuffer.iter().map(|byte| format!("{:02X}", byte)).collect::<Vec<_>>().join(" ");
+            //println!("{}", str_buf);
 
             
         }
