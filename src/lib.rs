@@ -91,7 +91,7 @@ impl SerialComm {
                 }
 
                 // 改行があったらラインバッファをクリアする。
-                if let Some(index) = buffer.iter().position(|&x| x == "\r" || x == "\n" ) {
+                if let Some(index) = buffer.iter().position(|&x| x == b'\r' || x == b'\n' ) {
                     let linebuffer:Vec<u8> = linebuffer[index+1..].to_vec();
                 }
             }
