@@ -93,7 +93,7 @@ impl SerialComm {
                 linebuffer.extend(&buffer);
                 truncate_before_newline(&mut linebuffer);
                 let data = String::from_utf8_lossy(&linebuffer);
-                println!("{:?}\n{:?}\n", &data, &target);
+                //println!("{:?}\n{:?}\n", &data, &target);
                 if let Some(caps) = re.captures(&data) {
                     return caps[0].to_string();
                 }
