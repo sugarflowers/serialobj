@@ -97,6 +97,7 @@ impl SerialComm {
                 }
             }
             // 改行があったらラインバッファをクリアする。
+            println!("{:?}", &linebuffer);
             truncate_before_newline(&mut linebuffer);
         }
     }
