@@ -92,12 +92,12 @@ impl SerialComm {
                 // ヒットした場合ヒットした文字列を返す。
                 linebuffer.extend(&buffer);
                 let data = String::from_utf8_lossy(&linebuffer);
+                println!("{:?}\n{:?}\n", &data, &target)
                 if let Some(caps) = re.captures(&data) {
                     return caps[0].to_string();
                 }
             }
             // 改行があったらラインバッファをクリアする。
-            println!("{:?}", &linebuffer);
             truncate_before_newline(&mut linebuffer);
         }
     }
